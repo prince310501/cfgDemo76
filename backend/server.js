@@ -1,6 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import userRouter from './Routers/userRouter.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -17,6 +20,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/users', userRouter);
+
+app.use((err, req, res, next) => {
+    res.status(500).send({message: err.message});
+});
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
